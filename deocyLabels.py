@@ -6,9 +6,6 @@ parser.add_argument('--output',required=True)
 
 args = parser.parse_args()
 
-print(args.input)
-
-
 
 def checkFile(path):
     try:

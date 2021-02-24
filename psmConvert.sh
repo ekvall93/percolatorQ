@@ -1,13 +1,21 @@
 #!/bin/bash
 
-path="/home/ekvall/Desktop/new_output"
+path="/home/ekvall/Desktop/tutorial_percolater"
 count=0
-for i in $(find $path -name '*.pepXML'); do # Not recommended, will break on whitespace
+for pinFile in $(find $path -name '*.pin'); do # Not recommended, will break on whitespace
   echo $count
-  echo "$i"
-  outPath="$path/crux_$count"
-  crux psm-convert --input-format pepxml --output-dir $outPath $i pin 
-  python deocyLabels.py --input "$outPath/psm-convert.pin" --output "$outPath/psm-convert_m.pin"
-  percolator -X "$outPath/pout.xml" "$outPath/psm-convert_m.pin" >"$outPath/test.psms"
+  echo "$pinFile"
+  f="$(basename -- $pinFile)"
+  filename="${f%.*}"
+  echo $filename
+  #outPath="$path/crux_$count"
+  #crux psm-convert --input-format pepxml --output-dir $outPath $i pin 
+
+  #modifiedPin="$path/${filename}_m.pin"
+  #python deocyLabels.py --input "$pinFile" --output $modifiedPin
+  #echo "$path/${filename}_m.pin"
+  xmlOut="${path}/${filename}.xml"
+  psmOut="${path}/${filename}.psms"
+  percolator -X $xmlOut $pinFile > $psmOut
   (( count++ ))
 done
